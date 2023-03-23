@@ -42,7 +42,15 @@ def main():
     restartb_text = reset_font.render("Restart", True, (0, 0, 50))
     def restart_game():
         pygame.display.update()
-        main()
+        # main()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if reset_button_rect.collidepoint(event.pos):
+                        reset_game()
+                        return
+                    elif restartb_rect.collidepoint(event.pos):
+                        return
   # Game loop
     running = True
     while running:
@@ -96,12 +104,21 @@ def main():
             running = False
         # Update the display
         pygame.display.update()
-    # Display the winner
+# Display the winner
     winner = "RED" if player1_score > player2_score else "BLUE" if player2_score > player1_score else "TIE"
     winner_text = score_font.render(f"Winner: {winner}", True, (130, 43, 171))
     screen.blit(winner_text, (375, 1960))
-    winner_text=pygame.font.SysFont("Bold",500)
     pygame.display.update()
+    
+    # Add delay and reset the game
+    pygame.time.delay(5000)  # Wait for 5 seconds
     reset_game()
-    pygame.event.wait(2147483645)
+    
+    # Loop to wait for user input
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # User clicked mouse, exit loop
+                return
+
 main()
